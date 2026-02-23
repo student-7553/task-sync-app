@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 enum class SortOrder {
@@ -40,12 +41,15 @@ class TaskViewModel @Inject constructor(
     )
 
     init {
-        fetchTasks()
+        startPeriodicSync()
     }
 
-    private fun fetchTasks() {
+    private fun startPeriodicSync() {
         viewModelScope.launch {
-            repository.fetchTasksFromServer()
+            while (true) {
+                repository.fetchTasksFromServer()
+                delay(30_000)
+            }
         }
     }
 
