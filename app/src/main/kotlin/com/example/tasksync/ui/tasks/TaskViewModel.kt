@@ -39,6 +39,16 @@ class TaskViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
+    init {
+        fetchTasks()
+    }
+
+    private fun fetchTasks() {
+        viewModelScope.launch {
+            repository.fetchTasksFromServer()
+        }
+    }
+
     fun setSortOrder(order: SortOrder) {
         _sortOrder.value = order
     }

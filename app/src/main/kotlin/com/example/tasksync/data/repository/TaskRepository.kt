@@ -45,6 +45,19 @@ class TaskRepository @Inject constructor(
         }
     }
 
+    suspend fun fetchTasksFromServer() {
+        auth.currentUser?.uid?.let { uid ->
+            try {
+                val tasks = firestoreService.getTasks(uid)
+                tasks.forEach { task ->
+                    taskDao.insertTask(task.copy(isSynced = true))
+                }
+            } catch (e: Exception) {
+                // Ignore for now
+            }
+        }
+    }
+
     suspend fun getTaskById(id: String): Task? {
         return taskDao.getTaskById(id)
     }
