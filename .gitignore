@@ -27,4 +27,4 @@ replay_pid*
 .kotlin/
 
 # Node
-node_modules/
+functions/node_modules/
